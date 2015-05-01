@@ -11,19 +11,36 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <NoWin32Manifest>False</NoWin32Manifest>
+    <ApplicationIcon>compile.ico</ApplicationIcon>
+    <SignAssembly>True</SignAssembly>
+    <DelaySign>False</DelaySign>
+    <AssemblyOriginatorKeyMode>File</AssemblyOriginatorKeyMode>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+    <NoStdLib>False</NoStdLib>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+    <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>False</RunCodeAnalysis>
+    <SourceAnalysisOverrideSettingsFile>C:\Users\filmee24\AppData\Roaming\ICSharpCode\SharpDevelop5\Settings.SourceAnalysis</SourceAnalysisOverrideSettingsFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
     <PlatformTarget>x86</PlatformTarget>
+    <BaseAddress>4194304</BaseAddress>
+    <RegisterForComInterop>False</RegisterForComInterop>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <FileAlignment>4096</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <OutputPath>bin\Debug\</OutputPath>
     <DebugSymbols>True</DebugSymbols>
-    <DebugType>Full</DebugType>
+    <DebugType>None</DebugType>
     <Optimize>False</Optimize>
     <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <StartAction>Project</StartAction>
-    <StartArguments>sql.ebnf command SqlGrammar</StartArguments>
+    <StartArguments>-g="sql.ebnf" -p="command" -n="SqlGrammar" -s</StartArguments>
+    <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -54,11 +71,64 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CmdArgs\Core\DescriptorType.cs" />
+    <Compile Include="CmdArgs\Core\InstanceBuilder.cs" />
+    <Compile Include="CmdArgs\Core\InstanceChooser.cs" />
+    <Compile Include="CmdArgs\Core\NameExtensions.cs" />
+    <Compile Include="CmdArgs\Core\NameLookup.cs" />
+    <Compile Include="CmdArgs\Core\OptionMapper.cs" />
+    <Compile Include="CmdArgs\Core\OptionSpecification.cs" />
+    <Compile Include="CmdArgs\Core\ReflectionExtensions.cs" />
+    <Compile Include="CmdArgs\Core\Specification.cs" />
+    <Compile Include="CmdArgs\Core\SpecificationExtensions.cs" />
+    <Compile Include="CmdArgs\Core\SpecificationGuards.cs" />
+    <Compile Include="CmdArgs\Core\SpecificationProperty.cs" />
+    <Compile Include="CmdArgs\Core\SpecificationPropertyExtensions.cs" />
+    <Compile Include="CmdArgs\Core\SpecificationPropertyRules.cs" />
+    <Compile Include="CmdArgs\Core\StatePair.cs" />
+    <Compile Include="CmdArgs\Core\Token.cs" />
+    <Compile Include="CmdArgs\Core\Tokenizer.cs" />
+    <Compile Include="CmdArgs\Core\TokenPartitioner.cs" />
+    <Compile Include="CmdArgs\Core\TypeConverter.cs" />
+    <Compile Include="CmdArgs\Core\TypeLookup.cs" />
+    <Compile Include="CmdArgs\Core\ValueMapper.cs" />
+    <Compile Include="CmdArgs\Core\ValueSpecification.cs" />
+    <Compile Include="CmdArgs\Core\Verb.cs" />
+    <Compile Include="CmdArgs\Error.cs" />
+    <Compile Include="CmdArgs\Infrastructure\EnumerableExtensions.cs" />
+    <Compile Include="CmdArgs\Infrastructure\Identity.cs" />
+    <Compile Include="CmdArgs\Infrastructure\Maybe.cs" />
+    <Compile Include="CmdArgs\Infrastructure\PopsicleSetter.cs" />
+    <Compile Include="CmdArgs\Infrastructure\ReflectionHelper.cs" />
+    <Compile Include="CmdArgs\Infrastructure\StringExtensions.cs" />
+    <Compile Include="CmdArgs\NameInfo.cs" />
+    <Compile Include="CmdArgs\NullInstance.cs" />
+    <Compile Include="CmdArgs\OptionAttribute.cs" />
+    <Compile Include="CmdArgs\Parser.cs" />
+    <Compile Include="CmdArgs\ParserExtensions.cs" />
+    <Compile Include="CmdArgs\ParserResult.cs" />
+    <Compile Include="CmdArgs\ParserSettings.cs" />
+    <Compile Include="CmdArgs\Text\AssemblyLicenseAttribute.cs" />
+    <Compile Include="CmdArgs\Text\AssemblyUsageAttribute.cs" />
+    <Compile Include="CmdArgs\Text\CopyrightInfo.cs" />
+    <Compile Include="CmdArgs\Text\HeadingInfo.cs" />
+    <Compile Include="CmdArgs\Text\HelpText.cs" />
+    <Compile Include="CmdArgs\Text\MultiLineTextAttribute.cs" />
+    <Compile Include="CmdArgs\Text\SentenceBuilder.cs" />
+    <Compile Include="CmdArgs\ValueAttribute.cs" />
+    <Compile Include="CmdArgs\VerbAttribute.cs" />
+    <Compile Include="CommandLineOptions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="CmdArgs" />
+    <Folder Include="CmdArgs\Core" />
+    <Folder Include="CmdArgs\Infrastructure" />
+    <Folder Include="CmdArgs\Text" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
