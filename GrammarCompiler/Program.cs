@@ -15,10 +15,14 @@ namespace GrammarCompiler
 			
 			if (!result.Errors.Any()) 
 			{
-				Console.WriteLine("Compilling Ebnf...");
+				Console.WriteLine("Compilling Grammar...");
 			
-				var gr = new EbnfGrammar(EbnfStyle.W3c | EbnfStyle.SquareBracketAsOptional | EbnfStyle.WhitespaceSeparator);
-				var code = gr.ToCode(File.ReadAllText(result.Value.GrammarFile), result.Value.StartParser, result.Value.GrammarName);
+				string code = string.Empty;
+				try {
+					code = GetCode(result.Value);
+				} catch (Exception e) {
+					Console.WriteLine(e.Message);
+				}
 			
 				if (result.Value.GenerateSource) {
 					File.WriteAllText(result.Value.GrammarName + ".cs", code);
@@ -46,6 +50,25 @@ namespace GrammarCompiler
 			
 			Console.Write("Press any key to continue . . . ");
 			Console.ReadKey(true);
+		}
+		
+		private static string GetCode(CommandLineOptions opts)
+		{
+			if (opts.GrammarFile.EndsWith(".ebnf", StringComparison.Ordinal)) {
+			   	var gr = new EbnfGrammar(EbnfStyle.W3c | EbnfStyle.SquareBracketAsOptional | EbnfStyle.WhitespaceSeparator);
+				return gr.ToCode(File.ReadAllText(opts.GrammarFile), opts.StartParser, opts.GrammarName);
+			}
+			else if (opts.GrammarFile.EndsWith(".bnf", StringComparison.Ordinal)) {
+			   	var gr = new BnfGrammar();
+				return gr.ToCode(File.ReadAllText(opts.GrammarFile), opts.StartParser, opts.GrammarName);
+			}
+			else if (opts.GrammarFile.EndsWith(".gold", StringComparison.Ordinal)) {
+			   	var gr = new GoldGrammar();
+				return gr.ToCode(File.ReadAllText(opts.GrammarFile), opts.GrammarName);
+			}
+			else {
+				throw new Exception("GrammarType unknown. Try .ebnf .bnf .gold");
+			}
 		}
 	}
 }
