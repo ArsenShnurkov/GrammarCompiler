@@ -11,7 +11,7 @@ namespace GrammarCompiler
         [Option("g", "grammarfile", HelpText = "The Grammar File", Required = true)]
         public string GrammarFile { get; set; }
 
-        [Option("p", "startparser", HelpText = "The Grammar File", Required = true)]
+        [Option("p", "startparser", HelpText = "The Startparser of the Grammar", Required = true)]
         public string StartParser { get; set; }
         
         [Option("n", "grammarname", HelpText = "The Grammar Name", Required = true)]

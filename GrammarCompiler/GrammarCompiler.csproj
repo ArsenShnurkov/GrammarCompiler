@@ -39,7 +39,7 @@
     <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <StartAction>Project</StartAction>
-    <StartArguments>-g="sql.ebnf" -p="command" -n="SqlGrammar" -s</StartArguments>
+    <StartArguments>-g "sql.ebnf" -p "command" -n "SqlGrammar" -s</StartArguments>
     <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">

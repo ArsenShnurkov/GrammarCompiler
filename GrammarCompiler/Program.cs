@@ -6,17 +6,18 @@ using System.Linq;
 
 namespace GrammarCompiler
 {
-	class Program
+	public class Program
 	{
 		public static void Main(string[] args)
-		{
+		{			
 			var result = CommandLine.Parser.Default.ParseArguments<CommandLineOptions>(args);
+			
 			if (!result.Errors.Any()) 
 			{
 				Console.WriteLine("Compilling Ebnf...");
 			
 				var gr = new EbnfGrammar(EbnfStyle.W3c | EbnfStyle.SquareBracketAsOptional | EbnfStyle.WhitespaceSeparator);
-				var code = gr.ToCode(File.ReadAllText(args[0]), args[1], args[2]);
+				var code = gr.ToCode(File.ReadAllText(result.Value.GrammarFile), result.Value.StartParser, result.Value.GrammarName);
 			
 				if (result.Value.GenerateSource) {
 					File.WriteAllText(args[0] + ".cs", code);
@@ -29,7 +30,7 @@ namespace GrammarCompiler
 				cp.GenerateExecutable = false;
 				cp.ReferencedAssemblies.Add(typeof(EbnfGrammar).Assembly.Location);
 				cp.GenerateInMemory = false;
-				cp.OutputAssembly = args[2] + ".dll";
+				cp.OutputAssembly = result.Value.GrammarName + ".dll";
 			
 				var cRes = compiler.CompileAssemblyFromSource(cp, new [] { code });
 			
