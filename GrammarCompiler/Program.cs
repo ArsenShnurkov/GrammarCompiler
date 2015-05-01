@@ -1,4 +1,5 @@
 ﻿using System.CodeDom.Compiler;
+using System.Text;
 using Eto.Parse.Grammars;
 using System;
 using System.IO;
@@ -20,7 +21,7 @@ namespace GrammarCompiler
 				var code = gr.ToCode(File.ReadAllText(result.Value.GrammarFile), result.Value.StartParser, result.Value.GrammarName);
 			
 				if (result.Value.GenerateSource) {
-					File.WriteAllText(args[0] + ".cs", code);
+					File.WriteAllText(result.Value.GrammarName + ".cs", code);
 				}
 			
 				var compiler = new Microsoft.CSharp.CSharpCodeProvider();
