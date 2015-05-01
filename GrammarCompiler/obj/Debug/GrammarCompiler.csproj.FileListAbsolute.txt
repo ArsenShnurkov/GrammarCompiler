@@ -1,0 +1,9 @@
+C:\Users\filmee24\Documents\SharpDevelop Projects\EbnfCompiler\EbnfCompiler\bin\Debug\GrammarCompiler.exe.config
+C:\Users\filmee24\Documents\SharpDevelop Projects\EbnfCompiler\EbnfCompiler\bin\Debug\GrammarCompiler.exe
+C:\Users\filmee24\Documents\SharpDevelop Projects\EbnfCompiler\EbnfCompiler\bin\Debug\GrammarCompiler.pdb
+C:\Users\filmee24\Documents\SharpDevelop Projects\EbnfCompiler\EbnfCompiler\bin\Debug\Eto.Parse.dll
+C:\Users\filmee24\Documents\SharpDevelop Projects\EbnfCompiler\EbnfCompiler\bin\Debug\Eto.Parse.pdb
+C:\Users\filmee24\Documents\SharpDevelop Projects\EbnfCompiler\EbnfCompiler\bin\Debug\Eto.Parse.xml
+C:\Users\filmee24\Documents\SharpDevelop Projects\EbnfCompiler\EbnfCompiler\obj\Debug\GrammarCompiler.csprojResolveAssemblyReference.cache
+C:\Users\filmee24\Documents\SharpDevelop Projects\EbnfCompiler\EbnfCompiler\obj\Debug\GrammarCompiler.exe
+C:\Users\filmee24\Documents\SharpDevelop Projects\EbnfCompiler\EbnfCompiler\obj\Debug\GrammarCompiler.pdb

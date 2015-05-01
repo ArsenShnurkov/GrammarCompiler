@@ -1,0 +1,711 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Eto.Parse</name>
+    </assembly>
+    <members>
+        <member name="T:Eto.Parse.Grammars.EbnfStyle">
+            <summary>
+            Styles for the <see cref="T:Eto.Parse.Grammars.EbnfGrammar"/>
+            </summary>
+        </member>
+        <member name="F:Eto.Parse.Grammars.EbnfStyle.Iso14977">
+            <summary>
+            ISO format as defined here: http://en.wikipedia.org/wiki/Extended_Backus-Naur_Form
+            </summary>
+        </member>
+        <member name="F:Eto.Parse.Grammars.EbnfStyle.W3c">
+            <summary>
+            W3C format as defined for the XML spec here: http://www.w3.org/TR/REC-xml/#sec-notation
+            </summary>
+        </member>
+        <member name="F:Eto.Parse.Grammars.EbnfStyle.BracketComments">
+            <summary>
+            Enables comments using round brackets (* *), otherwise comments use C style /* */
+            </summary>
+        </member>
+        <member name="F:Eto.Parse.Grammars.EbnfStyle.SquareBracketAsOptional">
+            <summary>
+            Enables using square brackets for optional sequences.  E.g. [ (rules) ]. Mutually exclusive with <see cref="F:Eto.Parse.Grammars.EbnfStyle.CharacterSets"/> option.
+            </summary>
+        </member>
+        <member name="F:Eto.Parse.Grammars.EbnfStyle.CharacterSets">
+            <summary>
+            Enables using character sets and ranges in square brackets. E.g. [1-9ABCDEF], with a carat for inverse: [^1-9ABCDEF]
+            </summary>
+        </member>
+        <member name="F:Eto.Parse.Grammars.EbnfStyle.NumericCardinality">
+            <summary>
+            Enables numeric cardinality to prefix a term. E.g. 10 * (myTerm)
+            </summary>
+        </member>
+        <member name="F:Eto.Parse.Grammars.EbnfStyle.CardinalityFlags">
+            <summary>
+            Enables cardinality flags *+? after the rule, E.g. myFirstTerm* mySecondTerm+ myThirdTerm?.
+            </summary>
+            <remarks>
+            * = zero or more
+            + = one or more
+            ? = zero or one, only enabled when <see cref="F:Eto.Parse.Grammars.EbnfStyle.SquareBracketAsOptional"/> is not specified.
+            </remarks>
+        </member>
+        <member name="F:Eto.Parse.Grammars.EbnfStyle.SemicolonTerminator">
+            <summary>
+            Require a semicolon to terminate each rule, otherwise only whitespace is required. E.g. myTerm = Term1 , Term2;
+            </summary>
+        </member>
+        <member name="F:Eto.Parse.Grammars.EbnfStyle.CommaSeparator">
+            <summary>
+            Separate each term by a comma. If not specified, a term may be more than one word.
+            </summary>
+        </member>
+        <member name="F:Eto.Parse.Grammars.EbnfStyle.DoubleColonEquals">
+            <summary>
+            Use a double colon for the rule equals. If not specified, no colon is required.  E.g. myTerm ::= Term1  vs. myTerm = Term1
+            </summary>
+        </member>
+        <member name="F:Eto.Parse.Grammars.EbnfStyle.WhitespaceSeparator">
+            <summary>
+            Use Terminals.WhiteSpace as a default separator between each non-terminal. Ignored when <see cref="F:Eto.Parse.Grammars.EbnfStyle.UseWhitespaceRule"/> is specified and grammar defines the whitespace terminal.
+            </summary>
+        </member>
+        <member name="F:Eto.Parse.Grammars.EbnfStyle.UseCommentRuleWithSeparator">
+            <summary>
+            Use the rule named 'comment' for whitespace in the definition. Ignored when <see cref="F:Eto.Parse.Grammars.EbnfStyle.UseWhitespaceRule"/> is specified and grammar defines the whitespace terminal.
+            </summary>
+        </member>
+        <member name="F:Eto.Parse.Grammars.EbnfStyle.UseWhitespaceRule">
+            <summary>
+            Use the rule named 'whitespace' as the separator between each non-terminal. Overrides <see cref="F:Eto.Parse.Grammars.EbnfStyle.WhitespaceSeparator"/> and <see cref="F:Eto.Parse.Grammars.EbnfStyle.UseCommentRuleWithSeparator"/>.
+            </summary>
+        </member>
+        <member name="T:Eto.Parse.Grammars.EbnfGrammar">
+             <summary>
+             Grammar to build a parser grammar using Extended Backus-Naur Form
+             </summary>
+             <remarks>
+             This has a few extensions to allow for explicit or implicit whitespace:
+             <code>
+             	terminal sequence := 'a', 'b', 'c', 'd'; (* no whitespace inbetween *)
+             	rule sequence = 'a', 'b', 'c', 'd'; (* allows for whitespace *)
+             </code>
+             
+             You can also reference parsers from <see cref="P:Eto.Parse.Grammars.EbnfGrammar.SpecialParsers"/> which by default includes the list
+             of terminals from <see cref="T:Eto.Parse.Terminals"/>
+             <code>
+             	ws := ? Terminals.Whitespace ?;
+             </code>
+            
+             This grammar is not thread-safe.
+             </remarks>
+        </member>
+        <member name="T:Eto.Parse.Grammar">
+            <summary>
+            Defines the top level parser (a grammar) used to parse text
+            </summary>
+        </member>
+        <member name="T:Eto.Parse.Parser">
+            <summary>
+            Base parser class to define a parsing rule
+            </summary>
+            <remarks>
+            All parsers should derive from this class to define the various ways to parse text.
+            There are other base parsers that define base functionality such as a <see cref="T:Eto.Parse.ListParser"/>
+            for parsers that contain a list of children parsers, or <see cref="T:Eto.Parse.UnaryParser"/> for parsers
+            that contain a single child.
+            </remarks>
+        </member>
+        <member name="M:Eto.Parse.Parser.OnMatched(Eto.Parse.Match)">
+            <summary>
+            Raises the <see cref="E:Eto.Parse.Parser.Matched"/> event
+            </summary>
+            <param name="match">Match</param>
+        </member>
+        <member name="M:Eto.Parse.Parser.OnPreMatch(Eto.Parse.Match)">
+            <summary>
+            Raises the <see cref="E:Eto.Parse.Parser.PreMatch"/> event
+            </summary>
+            <param name="match">Match</param>
+        </member>
+        <member name="M:Eto.Parse.Parser.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Eto.Parse.Parser"/> class.
+            </summary>
+        </member>
+        <member name="M:Eto.Parse.Parser.#ctor(Eto.Parse.Parser,Eto.Parse.ParserCloneArgs)">
+            <summary>
+            Initializes a new copy of the <see cref="T:Eto.Parse.Parser"/> class
+            </summary>
+            <param name="other">Parser to copy</param>
+            <param name="args">Arguments for the copy</param>
+        </member>
+        <member name="M:Eto.Parse.Parser.Children">
+            <summary>
+            Gets an enumeration of all child parsers of this instance
+            </summary>
+        </member>
+        <member name="M:Eto.Parse.Parser.Children(Eto.Parse.ParserChildrenArgs)">
+            <summary>
+            Gets an enumeration of all child parsers of this instance
+            </summary>
+            <remarks>
+            Implementors of parsers should implement this, and call <see cref="M:Eto.Parse.ParserChain.Push(Eto.Parse.Parser)"/> and <see cref="M:Eto.Parse.ParserChain.Pop"/>
+            before calling the Children method of contained parsers.
+            </remarks>
+            <param name="args">Arguments to get the children</param>
+        </member>
+        <member name="M:Eto.Parse.Parser.GetErrorMessage">
+            <summary>
+            Gets the error message to display for this parser
+            </summary>
+            <remarks>
+            By default, this will use the DescriptiveName
+            </remarks>
+            <returns>The error message to display when not matched</returns>
+        </member>
+        <member name="M:Eto.Parse.Parser.Parse(Eto.Parse.ParseArgs)">
+            <summary>
+            Parses the input at the current position
+            </summary>
+            <remarks>
+            Implementors of a Parser should implement <see cref="M:Eto.Parse.Parser.InnerParse(Eto.Parse.ParseArgs)"/> to perform the logic of their parser.
+            </remarks>
+            <param name="args">Parsing arguments</param>
+            <returns>The length of the successfully matched value (can be zero), or -1 if not matched</returns>
+        </member>
+        <member name="M:Eto.Parse.Parser.InnerParse(Eto.Parse.ParseArgs)">
+            <summary>
+            Override to implement the main parsing logic for this parser
+            </summary>
+            <remarks>
+            Never call this method directly, always call <see cref="M:Eto.Parse.Parser.Parse(Eto.Parse.ParseArgs)"/> when calling parse routines.
+            </remarks>
+            <returns>The length of the successfully matched value (can be zero), or -1 if not matched</returns>
+            <param name="args">Parsing arguments</param>
+        </member>
+        <member name="M:Eto.Parse.Parser.Initialize(Eto.Parse.ParserInitializeArgs)">
+            <summary>
+            Called to initialize the parser when used in a grammar
+            </summary>
+            <remarks>
+            This is used to perform certain tasks like caching information for performance, or to deal with
+            things like left recursion in the grammar.
+            </remarks>
+            <param name="args">Initialization arguments</param>
+        </member>
+        <member name="M:Eto.Parse.Parser.Contains(Eto.Parse.Parser)">
+            <summary>
+            Gets a value indicating that the specified <paramref name="parser"/> is contained within this instance
+            </summary>
+            <param name="parser">Parser to search for</param>
+        </member>
+        <member name="M:Eto.Parse.Parser.Contains(Eto.Parse.ParserContainsArgs)">
+            <summary>
+            Gets a value indicating that a parser is contained within this instance
+            </summary>
+            <param name="args">Arguments specifying which parser to search for and recursion</param>
+        </member>
+        <member name="M:Eto.Parse.Parser.IsLeftRecursive(Eto.Parse.Parser)">
+            <summary>
+            Determines whether this instance is left recursive with the specified parser
+            </summary>
+            <returns><c>true</c> if this instance is left recursive the specified parser; otherwise, <c>false</c>.</returns>
+            <param name="parser">Parser.</param>
+        </member>
+        <member name="M:Eto.Parse.Parser.IsLeftRecursive(Eto.Parse.ParserContainsArgs)">
+            <summary>
+            Determines whether this instance is left recursive with the specified parser
+            </summary>
+            <remarks>
+            This variant can be overridden by implementors to determine left recursion. Use the <paramref name="args"/>
+            to ensure infinite recursion does not occur using Push/Pop.
+            </remarks>
+            <returns><c>true</c> if this instance is left recursive the specified parser; otherwise, <c>false</c>.</returns>
+            <param name="args">Arguments for finding the left recursion</param>
+        </member>
+        <member name="M:Eto.Parse.Parser.SetError(System.Boolean,System.String)">
+            <summary>
+            Sets the <see cref="P:Eto.Parse.Parser.AddError"/> flag on all children of this parser
+            </summary>
+            <param name="addError">Value to set the AddError flag to</param>
+            <param name="name">Name of the parser(s) to match, or null to set all children</param>
+        </member>
+        <member name="M:Eto.Parse.Parser.SetError``1(System.Boolean,System.String)">
+            <summary>
+            Sets the <see cref="P:Eto.Parse.Parser.AddError"/> flag on all children of this parser
+            </summary>
+            <param name="addError">Value to set the AddError flag to</param>
+            <param name="name">Name of the parser(s) to match, or null to set all children</param>
+            <typeparam name="T">The type of parser to update</typeparam>
+        </member>
+        <member name="M:Eto.Parse.Parser.GetValue(Eto.Parse.Match)">
+            <summary>
+            Gets the object value of the parser for the specified match
+            </summary>
+            <remarks>
+            Specialized parsers such as <see cref="T:Eto.Parse.Parsers.NumberParser"/>, <see cref="T:Eto.Parse.Parsers.StringParser"/>, etc
+            can return a type-specific value from its string representation using this method.
+            
+            For example, the NumberParser can return an int, decimal, double, etc. and the StringParser
+            can process escape sequences or double quoted values.
+            
+            To get the value from a specified text fragment, use <see cref="M:Eto.Parse.Parser.GetValue(System.String)"/>.
+            
+            Implementors of parsers can override this (or preferrably <see cref="M:Eto.Parse.Parser.GetValue(System.String)"/>) to
+            provide special logic to get the translated object value.
+            </remarks>
+            <returns>The translated object value from the range specified in the <paramref name="match"/></returns>
+            <param name="match">Match to get the object value for</param>
+        </member>
+        <member name="M:Eto.Parse.Parser.GetValue(System.String)">
+            <summary>
+            Gets the object value of the parser for the specified text representation
+            </summary>
+            <remarks>
+            Specialized parsers such as <see cref="T:Eto.Parse.Parsers.NumberParser"/>, <see cref="T:Eto.Parse.Parsers.StringParser"/>, etc
+            can return a type-specific value from its string representation using this method.
+            
+            For example, the NumberParser can return an int, decimal, double, etc. and the StringParser
+            can process escape sequences or double quoted values.
+            
+            To get the value from a specified <see cref="T:Eto.Parse.Match"/>, use <see cref="M:Eto.Parse.Parser.GetValue(Eto.Parse.Match)"/> instead.
+            
+            Implementors of parsers can override this to provide special logic to get the translated object value.
+            </remarks>
+            <returns>The translated object value from the specified <paramref name="text"/></returns>
+            <param name="text">Text representation to translate to an object value</param>
+        </member>
+        <member name="P:Eto.Parse.Parser.Name">
+            <summary>
+            Gets or sets the name of the match added to the match result tree
+            </summary>
+            <remarks>
+            When you set this property, it affects the match result tree returned from the <see cref="M:Eto.Parse.Grammar.Match(System.String)"/>
+            method. Each parser that is named will get a node entry in the match tree if it has succesfully matched
+            on the input string.  This allows you to
+            
+            If this is set to <c>null</c>, this parser will not add a node to the match tree, but any named
+            children will still add to the match tree (if any).
+            
+            If you set the name, the parser will automatically set <see cref="P:Eto.Parse.Parser.AddError"/> to <c>true</c>
+            to give back information when this parser does not match, unless AddError has already been set
+            to something else explicitly.
+            </remarks>
+            <value>The name to give the match in the match result tree</value>
+        </member>
+        <member name="P:Eto.Parse.Parser.DefaultSeparator">
+            <summary>
+            Gets or sets the default separator to use for parsers that support a separator
+            </summary>
+            <value>The default separator.</value>
+        </member>
+        <member name="P:Eto.Parse.Parser.AddError">
+            <summary>
+            Gets or sets a value indicating that this parser should add to the errors list when not matched
+            </summary>
+            <value><c>true</c> to add errors; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:Eto.Parse.Parser.DescriptiveName">
+            <summary>
+            Gets a name of the parser used to describe its intent, used for the error message or display tree
+            </summary>
+            <value>The descriptive name</value>
+        </member>
+        <member name="P:Eto.Parse.Parser.HasNamedChildren">
+            <summary>
+            Gets a value indicating that this parser has named children
+            </summary>
+            <remarks>
+            This is useful to know when to use <see cref="M:Eto.Parse.ParseArgs.Push"/> before parsing children, and
+            <see cref="M:Eto.Parse.ParseArgs.PopFailed"/> / <see cref="M:Eto.Parse.ParseArgs.PopSuccess"/> after.
+            
+            Using Push/Pop methods allow you to keep track of and discard (or keep) child matches based
+            on the success or failure.  
+            
+            This is set during initialization of the grammar before the first parse is performed.
+            </remarks>
+        </member>
+        <member name="E:Eto.Parse.Parser.Matched">
+            <summary>
+            Event to handle when this parser is matched
+            </summary>
+            <remarks>
+            This event is fired only for matches that have a <see cref="P:Eto.Parse.Parser.Name"/> defined.
+            </remarks>
+        </member>
+        <member name="E:Eto.Parse.Parser.PreMatch">
+            <summary>
+            Event to handle before this parser is matched
+            </summary>
+        </member>
+        <member name="M:Eto.Parse.Grammar.#ctor(Eto.Parse.Grammar,Eto.Parse.ParserCloneArgs)">
+            <summary>
+            Initializes a new copy of the <see cref="T:Eto.Parse.Grammar"/> class
+            </summary>
+            <param name="other">Other object to copy</param>
+            <param name="args">Arguments for the copy</param>
+        </member>
+        <member name="M:Eto.Parse.Grammar.#ctor(System.String,Eto.Parse.Parser)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Eto.Parse.Grammar"/> class
+            </summary>
+            <param name="name">Name of the grammar</param>
+            <param name="rule">Top level grammar rule</param>
+        </member>
+        <member name="M:Eto.Parse.Grammar.#ctor(Eto.Parse.Parser)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Eto.Parse.Grammar"/> class
+            </summary>
+            <param name="rule">Top level grammar rule</param>
+        </member>
+        <member name="M:Eto.Parse.Grammar.Initialize">
+            <summary>
+            Initializes this instance for parsing
+            </summary>
+            <remarks>
+            Initialization (usually) occurs only once, and should only be called after
+            the grammar is fully defined. This will be called automatically the first
+            time you call the <see cref="M:Eto.Parse.Grammar.Match(System.String)"/> method.
+            </remarks>
+        </member>
+        <member name="P:Eto.Parse.Grammar.EnableMatchEvents">
+            <summary>
+            Gets or sets a value indicating that the match events will be triggered after a successful match
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Eto.Parse.Grammar.Separator">
+            <summary>
+            Gets or sets the separator to use for <see cref="T:Eto.Parse.Parsers.RepeatParser"/> and <see cref="T:Eto.Parse.Parsers.SequenceParser"/> if not explicitly defined.
+            </summary>
+            <value>The separator to use inbetween repeats and items of a sequence</value>
+        </member>
+        <member name="P:Eto.Parse.Grammar.CaseSensitive">
+            <summary>
+            Gets or sets a value indicating whether this grammar is case sensitive or not
+            </summary>
+            <value><c>true</c> if case sensitive; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:Eto.Parse.Grammar.AllowPartialMatch">
+            <summary>
+            Gets or sets a value indicating whether a partial match of the input scanner is allowed
+            </summary>
+            <value><c>true</c> to allow a successful match if partially matched; otherwise, <c>false</c> to indicate that the entire input must be consumed to match.</value>
+        </member>
+        <member name="T:Eto.Parse.ParseArgs">
+            <summary>
+            Arguments used for each parse operation
+            </summary>
+            <remarks>
+            This is used during the parsing process to track the current match tree, errors, scanner, etc.
+            </remarks>
+        </member>
+        <member name="M:Eto.Parse.ParseArgs.AddError(Eto.Parse.Parser)">
+            <summary>
+            Adds an error for the specified parser at the current position
+            </summary>
+            <param name="parser">Parser to add the error for</param>
+        </member>
+        <member name="M:Eto.Parse.ParseArgs.SetChildError">
+            <summary>
+            Sets the child error index for parsers that have <see cref="P:Eto.Parse.Parser.AddError"/> set to false
+            </summary>
+        </member>
+        <member name="M:Eto.Parse.ParseArgs.Push">
+            <summary>
+            Pushes a new match tree node
+            </summary>
+            <remarks>
+            Use this when there is a possibility that a child parser will not match, such as the <see cref="T:Eto.Parse.Parsers.OptionalParser"/>,
+            items in a <see cref="T:Eto.Parse.Parsers.AlternativeParser"/>
+            </remarks>
+        </member>
+        <member name="M:Eto.Parse.ParseArgs.Pop">
+            <summary>
+            Pops the last match tree node, and returns its value
+            </summary>
+            <remarks>
+            Use <see cref="M:Eto.Parse.ParseArgs.PopSuccess"/> or <see cref="M:Eto.Parse.ParseArgs.PopFailed"/> when implementing parsers.
+            This does not perform any logic like merging the match tree with the parent node when succesful,
+            nor does it allow for re-use of the match collection for added performance.
+            </remarks>
+        </member>
+        <member name="M:Eto.Parse.ParseArgs.PopSuccess">
+            <summary>
+            When an optional match is successful, this pops the current match tree node and merges it with the
+            parent match tree node.
+            </summary>
+            <remarks>
+            This call must be proceeded with a call to <see cref="M:Eto.Parse.ParseArgs.Push"/> to push a match tree node.
+            </remarks>
+        </member>
+        <member name="M:Eto.Parse.ParseArgs.ClearMatches">
+            <summary>
+            Clears the matches of the current match tree node
+            </summary>
+            <remarks>
+            Used instead of doing a PopFailed() then another Push(), like an Alternative parser
+            </remarks>
+        </member>
+        <member name="M:Eto.Parse.ParseArgs.PopFailed">
+            <summary>
+            When an optional match did not succeed, this pops the current match tree node and prepares it for re-use.
+            </summary>
+            <remarks>
+            This call must be proceeded with a call to <see cref="M:Eto.Parse.ParseArgs.Push"/> to push a match tree node.
+            </remarks>
+        </member>
+        <member name="M:Eto.Parse.ParseArgs.PopMatch(Eto.Parse.Parser,System.Int32,System.Int32,System.String)">
+            <summary>
+            Pops a succesful named match node, and adds it to the parent match node
+            </summary>
+            <param name="parser">Parser with the name to add to the match tree</param>
+            <param name="index">Index of the start of the match</param>
+            <param name="length">Length of the match</param>
+            <param name="name">Name to give the match</param>
+        </member>
+        <member name="M:Eto.Parse.ParseArgs.PopMatch(Eto.Parse.Parser,System.Int32,System.Int32)">
+            <summary>
+            Pops a succesful named match node, and adds it to the parent match node
+            </summary>
+            <param name="parser">Parser with the name to add to the match tree</param>
+            <param name="index">Index of the start of the match</param>
+            <param name="length">Length of the match</param>
+        </member>
+        <member name="M:Eto.Parse.ParseArgs.AddMatch(Eto.Parse.Parser,System.Int32,System.Int32,System.String)">
+            <summary>
+            Adds a match to the current result match node with the specified name
+            </summary>
+            <remarks>
+            This is used to add a parse match to the result match tree
+            </remarks>
+            <param name="parser">Parser for the match</param>
+            <param name="index">Index of the start of the match</param>
+            <param name="length">Length of the match</param>
+            <param name="name">Name of this match (usually the Parser.Match value)</param>
+        </member>
+        <member name="M:Eto.Parse.ParseArgs.AddMatch(Eto.Parse.Parser,System.Int32,System.Int32)">
+            <summary>
+            Adds a match to the current result match node
+            </summary>
+            <remarks>
+            This is used to add a parse match to the result match tree
+            </remarks>
+            <param name="parser">Parser for the match</param>
+            <param name="index">Index of the start of the match</param>
+            <param name="length">Length of the match</param>
+        </member>
+        <member name="P:Eto.Parse.ParseArgs.Root">
+            <summary>
+            Gets the root match when the grammar is matched
+            </summary>
+        </member>
+        <member name="P:Eto.Parse.ParseArgs.Scanner">
+            <summary>
+            Gets the current scanner used to parse the text
+            </summary>
+            <value>The scanner</value>
+        </member>
+        <member name="P:Eto.Parse.ParseArgs.Grammar">
+            <summary>
+            Gets the current grammar being parsed
+            </summary>
+            <value>The grammar.</value>
+        </member>
+        <member name="P:Eto.Parse.ParseArgs.ErrorIndex">
+            <summary>
+            Gets the index of the last parser error (if any), or -1 if the error has not been set
+            </summary>
+            <remarks>
+            Use the <see cref="P:Eto.Parse.ParseArgs.Errors"/> collection to get the list of parsers that had an invalid match
+            at this position.
+            
+            Only parsers with the <see cref="P:Eto.Parse.Parser.AddError"/> flag turned on will cause the error
+            index to be updated to the position of where that parser started from.
+            
+            To get where the actual error occurred, see <see cref="P:Eto.Parse.ParseArgs.ChildErrorIndex"/>, which gives
+            you the exact position where the failure occurred.
+            
+            Alternatively, for debugging purposes you can turn on AddError for all parsers by using
+            <see cref="M:Eto.Parse.Parser.SetError(System.Boolean,System.String)"/> 
+            </remarks>
+            <value>The index of the error.</value>
+        </member>
+        <member name="P:Eto.Parse.ParseArgs.ChildErrorIndex">
+            <summary>
+            Gets the index of where the error action
+            </summary>
+            <value>The index of the error context.</value>
+        </member>
+        <member name="P:Eto.Parse.ParseArgs.Errors">
+            <summary>
+            Gets the list of parsers that failed a match at the specicified <see cref="P:Eto.Parse.ParseArgs.ErrorIndex"/>
+            </summary>
+            <remarks>
+            This is only added to when the <see cref="P:Eto.Parse.Parser.AddError"/> boolean value is true, and failed to match.
+            
+            For example, if you have a SequenceParser with <see cref="M:Eto.Parse.ParseArgs.AddError(Eto.Parse.Parser)"/> set to true, but none of its children,
+            then even when some of the children match (but not all otherwise there wouldn't be an error), then
+            the child won't be added to this list, only the parent.
+            
+            The <see cref="P:Eto.Parse.ParseArgs.ErrorIndex"/> will also indicate the position that the *parent* failed to match, not the
+            child.  To get the child index, use <see cref="P:Eto.Parse.ParseArgs.ChildErrorIndex"/>
+            </remarks>
+            <value>The list of parsers that have errors</value>
+        </member>
+        <member name="T:Eto.Parse.Parsers.AnySurrogatePairTerminal">
+            <summary>
+            Parser, which matches any UTF-32 surrogate pair character
+            </summary>
+        </member>
+        <member name="T:Eto.Parse.Parsers.SurrogatePairTerminal">
+            <summary>
+            Base parser for matching UTF-32 surrogate pair characters
+            </summary>
+        </member>
+        <member name="T:Eto.Parse.Parsers.SingleSurrogatePairTerminal">
+            <summary>
+            Parser, which matches a single UTF-32 surrogate pair character
+            </summary>
+        </member>
+        <member name="M:Eto.Parse.Parsers.SingleSurrogatePairTerminal.#ctor(System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Eto.Parse.Parsers.SingleSurrogatePairTerminal"/> class.
+            </summary>
+            <param name="codePoint">The UTF-32 code point to match.</param>
+        </member>
+        <member name="T:Eto.Parse.Parsers.SurrogatePairRangeTerminal">
+            <summary>
+            Parser, which matches a range of UTF-32 surrogate pair characters
+            </summary>
+        </member>
+        <member name="M:Eto.Parse.Parsers.SurrogatePairRangeTerminal.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Eto.Parse.Parsers.SurrogatePairRangeTerminal"/> class.
+            </summary>
+            <param name="min">The minimum UTF code point.</param>
+            <param name="max">The maximum UTF code point.</param>
+        </member>
+        <member name="T:Eto.Parse.FluentParserExtensions">
+            <summary>
+            Extensions for fluent API to define a grammar
+            </summary>
+        </member>
+        <member name="T:Eto.Parse.Grammars.GoldGrammar">
+            <summary>
+            Grammar to build a parser grammar using Gold Meta-Language
+            </summary>
+            <remarks>
+            See http://goldparser.org/doc/grammars/
+            
+            This grammar is not thread-safe.
+            </remarks>
+        </member>
+        <member name="T:Eto.Parse.Grammars.BnfGrammar">
+            <summary>
+            Grammar to build a parser grammar using Backus-Naur Form
+            </summary>
+            <remarks>
+            See https://en.wikipedia.org/wiki/Backus-Naur_Form.
+            
+            This implements certain enhancements, such as grouping using brackets, repeating using curly braces, and
+            optional values using square brackets.
+            
+            This grammar is not thread-safe.
+            </remarks>
+        </member>
+        <member name="P:Eto.Parse.Grammars.BnfGrammar.RuleSeparator">
+            <summary>
+            Gets or sets the separator for rules, which is usually '::=' for BNF
+            </summary>
+            <value>The rule separator</value>
+        </member>
+        <member name="P:Eto.Parse.Grammars.BnfGrammar.RuleParser">
+            <summary>
+            Gets the rule parser for each of the rule types
+            </summary>
+            <value>The rule parser.</value>
+        </member>
+        <member name="P:Eto.Parse.Grammars.BnfGrammar.TermParser">
+            <summary>
+            Gets the term parser for each term, such as optional, repeating, grouping, etc
+            </summary>
+            <value>The term parser.</value>
+        </member>
+        <member name="P:Eto.Parse.Grammars.BnfGrammar.Expresssions">
+            <summary>
+            Gets the expresssions parser to support different expressions. By default, only one expression
+            is defined: RuleNameParser &amp; RuleSeparator &amp; RuleParser &amp; EOL
+            </summary>
+            <value>The expresssions this parser supports</value>
+        </member>
+        <member name="P:Eto.Parse.Grammars.BnfGrammar.RuleNameParser">
+            <summary>
+            Gets the rule name parser, by default is a string surrounded by angle brackets
+            </summary>
+            <value>The rule name parser.</value>
+        </member>
+        <member name="P:Eto.Parse.Grammars.BnfGrammar.Rules">
+            <summary>
+            Gets the parsed rules
+            </summary>
+            <value>The rules.</value>
+        </member>
+        <member name="T:Eto.Parse.ParserChain">
+            <summary>
+            Base parser chain object to handle recursive calls
+            </summary>
+            <remarks>
+            When traversing the parser tree to perform certain logic like look up children, find a parser, or
+            determine left recursion, you can run into an infinite recursive loop when one exists in the grammar.
+            This helps eliviate that by keeping track of which parents have been processed and only process a parser
+            if it is not in the parent chain.
+            
+            The pattern is usually as follows, for parsers that contain children:
+            <code>
+            public class MyRecursiveCallArgs : ParserChain { }
+            
+            public class MyParser : Parser
+            {
+            	public void MyRecursiveCall(MyRecursiveCallArgs args)
+            	{
+            		if (args.Push(this))
+            		{
+            			Child.MyRecursiveCall(args);
+            			args.Pop(this);
+            		}
+            	}
+            }
+            </code>
+            </remarks>
+        </member>
+        <member name="M:Eto.Parse.ParserChain.Push(Eto.Parse.Parser)">
+            <summary>
+            Pushes the specified parser onto the chain
+            </summary>
+            <param name="parser">Parser to push</param>
+            <returns>True if the parser was added to the chain, false if it already exists in the chain</returns>
+        </member>
+        <member name="M:Eto.Parse.ParserChain.Pop">
+            <summary>
+            Pop the last parser from the chain
+            </summary>
+        </member>
+        <member name="P:Eto.Parse.ParserChain.Parents">
+            <summary>
+            Gets an enumerable of parents in the chain
+            </summary>
+            <value>The parents.</value>
+        </member>
+        <member name="T:Eto.Parse.ParserContainsArgs">
+            <summary>
+            Arguments to determine if a parser is contained within another
+            </summary>
+        </member>
+        <member name="T:Eto.Parse.SlimStack`1">
+            <summary>
+            Stack implementation using a non-shrinking list for great performance
+            </summary>
+        </member>
+    </members>
+</doc>

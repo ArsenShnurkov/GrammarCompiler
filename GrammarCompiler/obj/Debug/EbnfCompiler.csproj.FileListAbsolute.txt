@@ -1,0 +1,9 @@
+C:\Users\filmee24\Documents\SharpDevelop Projects\EbnfCompiler\EbnfCompiler\obj\Debug\EbnfCompiler.csprojResolveAssemblyReference.cache
+C:\Users\filmee24\Documents\SharpDevelop Projects\EbnfCompiler\EbnfCompiler\bin\Debug\EbnfCompiler.exe.config
+C:\Users\filmee24\Documents\SharpDevelop Projects\EbnfCompiler\EbnfCompiler\bin\Debug\EbnfCompiler.exe
+C:\Users\filmee24\Documents\SharpDevelop Projects\EbnfCompiler\EbnfCompiler\bin\Debug\EbnfCompiler.pdb
+C:\Users\filmee24\Documents\SharpDevelop Projects\EbnfCompiler\EbnfCompiler\obj\Debug\EbnfCompiler.exe
+C:\Users\filmee24\Documents\SharpDevelop Projects\EbnfCompiler\EbnfCompiler\obj\Debug\EbnfCompiler.pdb
+C:\Users\filmee24\Documents\SharpDevelop Projects\EbnfCompiler\EbnfCompiler\bin\Debug\Eto.Parse.dll
+C:\Users\filmee24\Documents\SharpDevelop Projects\EbnfCompiler\EbnfCompiler\bin\Debug\Eto.Parse.pdb
+C:\Users\filmee24\Documents\SharpDevelop Projects\EbnfCompiler\EbnfCompiler\bin\Debug\Eto.Parse.xml
