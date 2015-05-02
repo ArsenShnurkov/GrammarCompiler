@@ -83,14 +83,14 @@ dump ::=
  
 help ::=
     ("help"|"HELP"|"/HELP"|"/help"|"/?")
- 
+
 condition ::=
     (character_set)+
-    (["<"|">"|"!"]"="|["<"|">"|"="])
+    (["<"|">"|"="])
     (character_set)+
     [(("AND"|"and")|("OR"|"or"))
     (character_set)+
-    (["<"|">"|"!"]"="|["<"|">"|"="])
+    (["<"|">"|"="])
     (character_set)+]
  
 character_set ::=
