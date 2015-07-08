@@ -1,9 +1,8 @@
-﻿using System.CodeDom.Compiler;
-using System.Text;
-using Eto.Parse.Grammars;
-using System;
+﻿using System;
+using System.CodeDom.Compiler;
 using System.IO;
 using System.Linq;
+using Eto.Parse.Grammars;
 
 namespace GrammarCompiler
 {

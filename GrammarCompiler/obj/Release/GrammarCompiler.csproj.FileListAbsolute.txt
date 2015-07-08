@@ -1,0 +1,7 @@
+C:\Users\filmee24\Documents\GitHub\GrammarCompiler\GrammarCompiler\bin\Release\GrammarCompiler.exe.config
+C:\Users\filmee24\Documents\GitHub\GrammarCompiler\GrammarCompiler\bin\Release\GrammarCompiler.exe
+C:\Users\filmee24\Documents\GitHub\GrammarCompiler\GrammarCompiler\bin\Release\Eto.Parse.dll
+C:\Users\filmee24\Documents\GitHub\GrammarCompiler\GrammarCompiler\bin\Release\Eto.Parse.pdb
+C:\Users\filmee24\Documents\GitHub\GrammarCompiler\GrammarCompiler\bin\Release\Eto.Parse.xml
+C:\Users\filmee24\Documents\GitHub\GrammarCompiler\GrammarCompiler\obj\Release\GrammarCompiler.csprojResolveAssemblyReference.cache
+C:\Users\filmee24\Documents\GitHub\GrammarCompiler\GrammarCompiler\obj\Release\GrammarCompiler.exe
