@@ -7,6 +7,9 @@ namespace GrammarCompiler
 	{
         [Option("s", "source", HelpText = "Should Generate a source file", Required = false)]
         public bool GenerateSource { get; set; }
+        
+        [Option("so", "sourceOnly", HelpText = "Should Generate only a source file", Required = false)]
+        public bool SourceOnly { get; set; }
 
         [Option("g", "grammarfile", HelpText = "The Grammar File", Required = true)]
         public string GrammarFile { get; set; }
